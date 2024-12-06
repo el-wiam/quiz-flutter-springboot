@@ -63,7 +63,10 @@ class LoginScreen extends StatelessWidget {
                 const SizedBox(height: 20),
                 // Login Button
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(
+                        context, '/home');
+                  },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),

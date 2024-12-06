@@ -84,7 +84,10 @@ class SignUpScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: () {},
+                   onPressed: () {
+                    Navigator.pushNamed(
+                        context, '/');
+                  },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
