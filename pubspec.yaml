@@ -12,6 +12,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  image_picker: ^1.0.4
 
   cupertino_icons: ^1.0.8
 
@@ -26,3 +27,9 @@ flutter:
   # Ajout des assets ici
   assets:
     - assets/quiz1.png
+    - assets/Q1.png
+    - assets/Q2.png
+    - assets/Q3.png
+    - assets/Q4.png
+    - assets/Profil.png
+

@@ -1,24 +1,34 @@
 import 'package:flutter/material.dart';
-
-// void main() {
-//   runApp(MyApp());
-// }
-
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       home: ProfilePage(),
-//     );
-//   }
-// }
+import 'Menu.dart';
+import 'Edit_profil.dart';
 
 class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.lightBlue[50],
+      appBar: AppBar(
+        backgroundColor: Colors.lightBlue[100],
+        elevation: 0, // Enlève l'ombre de l'AppBar
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.blueGrey[700]),
+          onPressed: () {
+            Navigator.pop(context); // Retour à la page précédente
+          },
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.help_outline, color: Colors.blueGrey[700]),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => MenuPage()), // Affiche MenuPage
+              );
+            },
+          ),
+        ],
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -37,13 +47,13 @@ class ProfilePage extends StatelessWidget {
                   alignment: Alignment.topRight,
                   child: Padding(
                     padding: const EdgeInsets.only(right: 20),
-                    child: Icon(Icons.help_outline, color: Colors.blueGrey[700]),
+                    // child: Icon(Icons.help_outline, color: Colors.blueGrey[700]),
                   ),
                 ),
                 CircleAvatar(
                   radius: 50,
-                  backgroundImage: NetworkImage(
-                    'https://via.placeholder.com/150', // Remplace par ton URL d'image
+                  backgroundImage: AssetImage(
+                    'assets/Profil.png', // Remplace par ton URL d'image
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -57,7 +67,14 @@ class ProfilePage extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    // Redirection vers la page Edit Profile
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => EditProfilePage()),
+                    );
+                  },
                   icon: const Icon(Icons.edit, size: 18),
                   label: const Text("Edit Profile"),
                   style: ElevatedButton.styleFrom(
@@ -90,10 +107,10 @@ class ProfilePage extends StatelessWidget {
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10,
                 children: [
-                  ImageTile(imageUrl: 'https://via.placeholder.com/150'),
-                  ImageTile(imageUrl: 'https://via.placeholder.com/150'),
-                  ImageTile(imageUrl: 'https://via.placeholder.com/150'),
-                  ImageTile(imageUrl: 'https://via.placeholder.com/150'),
+                  ImageTile(imagePath: 'assets/Q1.png'),
+                  ImageTile(imagePath: 'assets/Q2.png'),
+                  ImageTile(imagePath: 'assets/Q3.png'),
+                  ImageTile(imagePath: 'assets/Q4.png'),
                 ],
               ),
             ),
@@ -128,9 +145,9 @@ class TabButton extends StatelessWidget {
 }
 
 class ImageTile extends StatelessWidget {
-  final String imageUrl;
+  final String imagePath;
 
-  const ImageTile({required this.imageUrl});
+  const ImageTile({required this.imagePath});
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +155,7 @@ class ImageTile extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         image: DecorationImage(
-          image: NetworkImage(imageUrl),
+          image: AssetImage(imagePath), // Utilise AssetImage
           fit: BoxFit.cover,
         ),
       ),
