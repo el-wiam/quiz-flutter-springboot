@@ -7,6 +7,8 @@ import 'screens/Menu.dart';
 import 'screens/Reset_Password.dart';
 import 'screens/Notification.dart';
 import 'screens/Edit_profil.dart';
+import 'screens/Quizzs/Quiz1.dart';
+import 'screens/Quizzs/Quiz2.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -28,6 +30,8 @@ class MyApp extends StatelessWidget {
         '/resetPassword':(context) => ResetPasswordPage(),
         '/notification':(context) => NotificationPage(),
         '/EditProfil':(context) => EditProfilePage(),
+        '/Quiz1':(context) => TopicPage(),
+        '/Quiz2':(context) => SubjectPage(),
       },
     );
   }
