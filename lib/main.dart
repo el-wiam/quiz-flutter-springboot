@@ -9,6 +9,9 @@ import 'screens/Notification.dart';
 import 'screens/Edit_profil.dart';
 import 'screens/Quizzs/Quiz1.dart';
 import 'screens/Quizzs/Quiz2.dart';
+import 'screens/Quizzs/Quiz3.dart';
+import 'screens/Quizzs/Quiz4.dart';
+import 'screens/Quizzs/Quiz5.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -32,6 +35,9 @@ class MyApp extends StatelessWidget {
         '/EditProfil':(context) => EditProfilePage(),
         '/Quiz1':(context) => TopicPage(),
         '/Quiz2':(context) => SubjectPage(),
+        '/Quiz3':(context) => DevOpsQuizPage(),
+        '/Quiz4':(context) => QuizResultsPage(userName: "Fati", score: 9,totalQuestions: 10,),
+        '/Quiz5':(context) => LeaderboardPage(),
       },
     );
   }

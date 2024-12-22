@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'Quizzs/Quiz1.dart'; // Importation de Quiz1.dart
-
+import 'QRcode.dart';
 class TopicsPage extends StatelessWidget {
   final List<String> topics = [
     "DevOps",
@@ -17,14 +17,24 @@ class TopicsPage extends StatelessWidget {
         backgroundColor: const Color.fromRGBO(116, 156, 164, 1),
         leading: GestureDetector(
           onTap: () {
-            Navigator.pushNamed(context, '/profile'); // Navigate to profile page
+            Navigator.pushNamed(
+                context, '/profile'); // Navigate to profile page
           },
           child: Icon(Icons.person, color: Colors.white),
         ),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Icon(Icons.cloud, color: Colors.white),
+            child: IconButton(
+              icon: const Icon(Icons.qr_code, color: Colors.white, size: 28),
+              onPressed: () {
+                // Ajoutez l'action pour scanner un QR code ici
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => QRScanPage()),
+                );
+              },
+            ),
           ),
         ],
         title: Center(
