@@ -3,31 +3,20 @@ package com.example.quizz.models;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "category")
+@Table(name = "quiz_category") // Updated table name to avoid conflicts
 public class Category {
 
     @Id
@@ -38,10 +27,22 @@ public class Category {
 
     private String description;
 
-    @OneToMany(mappedBy = "category",
-            orphanRemoval = true,cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "category", orphanRemoval = true, cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Quiz> quizzes = new LinkedHashSet<>();
 
-}
+    public Category(String title, String description) {
+        this.title = title;
+        this.description = description;
+    }
 
+    public void addQuiz(Quiz quiz) {
+        this.quizzes.add(quiz);
+        quiz.setCategory(this);
+    }
+
+    public void removeQuiz(Quiz quiz) {
+        this.quizzes.remove(quiz);
+        quiz.setCategory(null);
+    }
+}
