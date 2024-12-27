@@ -12,6 +12,10 @@ import 'screens/Quizzs/Quiz2.dart';
 import 'screens/Quizzs/Quiz3.dart';
 import 'screens/Quizzs/Quiz4.dart';
 import 'screens/Quizzs/Quiz5.dart';
+import 'screens/CR_Quizz/CR_Q3.dart';
+import 'screens/CR_Quizz/CR_Q1.dart' as CRQ1;
+import 'screens/CR_Quizz/CR_Q2.dart' as CRQ2;
+
 void main() {
   runApp(const MyApp());
 }
@@ -27,17 +31,20 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => LoginScreen(),
         '/signup': (context) => SignUpScreen(),
-        '/home':(context) => TopicsPage(),
-        '/profile':(context) => ProfilePage(),
-        '/menu':(context) => MenuPage(),
-        '/resetPassword':(context) => ResetPasswordPage(),
-        '/notification':(context) => NotificationPage(),
-        '/EditProfil':(context) => EditProfilePage(),
-        '/Quiz1':(context) => TopicPage(),
-        '/Quiz2':(context) => SubjectPage(),
-        '/Quiz3':(context) => DevOpsQuizPage(),
-        '/Quiz4':(context) => QuizResultsPage(userName: "Fati", score: 9,totalQuestions: 10,),
-        '/Quiz5':(context) => LeaderboardPage(),
+        '/home': (context) => TopicsPage(userId: 0,),
+        '/profile': (context) => ProfilePage(userId: 0,),
+        '/menu': (context) => MenuPage(),
+        '/resetPassword': (context) => ResetPasswordPage(),
+        '/notification': (context) => NotificationPage(),
+        '/EditProfil': (context) => EditProfilePage(),
+        '/Quiz1': (context) => TopicPage(categoryId: 0, userId: 0,),
+        '/Quiz2': (context) => SubjectPage(quizId: 0, userId: 0,),
+        '/Quiz3': (context) => DevOpsQuizPage(quizId: 0, userId: 0,),
+        '/Quiz4': (context) => QuizResultsPage(userId: 0, resultId: 0, quizId: 0,),
+        '/Quiz5': (context) => LeaderboardPage(),
+        '/CR_Q1': (context) => CRQ1.CreateQuizPage(), // Specify the alias
+        '/CR_Q2': (context) => CRQ2.SetQuestionsPage(quizId: 3, questionCount: 0, quizTitle: '',),
+        '/CR_Q3': (context) => QuizTopicPage(quizTitle: '', quizId: 0,),
       },
     );
   }

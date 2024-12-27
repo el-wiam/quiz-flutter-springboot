@@ -1,18 +1,89 @@
 import 'package:flutter/material.dart';
-import 'Quiz5.dart';
-class QuizResultsPage extends StatelessWidget {
-  final String userName; // Nom de l'utilisateur
-  final int score; // Score de l'utilisateur
-  final int totalQuestions; // Nombre total de questions
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'Quiz5.dart'; // Import the page for the leaderboard or next page
+
+class QuizResultsPage extends StatefulWidget {
+  final int userId;
+  final int quizId;
+  final int resultId;
 
   QuizResultsPage({
-    required this.userName,
-    required this.score,
-    required this.totalQuestions,
+    required this.userId,
+    required this.quizId,
+    required this.resultId,
   });
 
   @override
+  _QuizResultsPageState createState() => _QuizResultsPageState();
+}
+
+class _QuizResultsPageState extends State<QuizResultsPage> {
+  String userName = "";
+  int totalQuestions = 0;
+  int score = 0;
+  String userImage = "assets/Profil.png"; // Placeholder for user image
+  String quizTitle = "";
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserData();
+    _fetchQuizData();
+    _fetchResultData();
+  }
+
+  // Fetch user data using the userId
+  Future<void> _fetchUserData() async {
+    final response = await http.get(Uri.parse('http://localhost:8080/user/uid/${widget.userId}'));
+
+    if (response.statusCode == 200) {
+      final userData = jsonDecode(response.body);
+      setState(() {
+        userName = userData['username'];
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to load user data')));
+    }
+  }
+
+  // Fetch quiz data using the quizId
+  Future<void> _fetchQuizData() async {
+    final response = await http.get(Uri.parse('http://localhost:8080/quiz/${widget.quizId}'));
+
+    if (response.statusCode == 200) {
+      final quizData = jsonDecode(response.body);
+      setState(() {
+        quizTitle = quizData['title'];
+        totalQuestions = quizData['numofquestions'] ?? 0; // Ensure default value if null
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to load quiz data')));
+    }
+  }
+
+  // Fetch user result data using the resultId
+  Future<void> _fetchResultData() async {
+    final response = await http.get(Uri.parse('http://localhost:8080/result/${widget.resultId}'));
+
+    if (response.statusCode == 200) {
+      final resultData = jsonDecode(response.body);
+      setState(() {
+        // Get the total number of questions from the result
+        totalQuestions = resultData['numofquestions'] ?? 0; // Ensure default value if null
+        // Get the number of correct answers from the result
+        score = resultData['correctanswers'] ?? 0; // Ensure default value if null
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to load result data')));
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // Handle edge case where totalQuestions might be 0 or invalid
+    double progressValue = (totalQuestions > 0) ? (score / totalQuestions) : 0.0;
+
     return Scaffold(
       backgroundColor: Colors.lightBlue[50],
       appBar: AppBar(
@@ -21,7 +92,7 @@ class QuizResultsPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.blueGrey),
           onPressed: () {
-            Navigator.pop(context); // Retour à la page précédente
+            Navigator.pop(context); // Go back to the previous page
           },
         ),
         title: const Text(
@@ -53,14 +124,14 @@ class QuizResultsPage extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Photo de profil
+                // Profile picture
                 const CircleAvatar(
                   radius: 40,
                   backgroundImage: AssetImage('assets/Profil.png'),
                 ),
                 const SizedBox(height: 10),
 
-                // Nom de l'utilisateur
+                // User name
                 Text(
                   userName,
                   style: const TextStyle(
@@ -71,7 +142,7 @@ class QuizResultsPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 15),
 
-                // Message de félicitations
+                // Congratulations message
                 const Text(
                   "CONGRATULATIONS!",
                   style: TextStyle(
@@ -82,7 +153,7 @@ class QuizResultsPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
 
-                // Texte "Your score"
+                // "Your score" label
                 const Text(
                   "Your score",
                   style: TextStyle(
@@ -92,14 +163,13 @@ class QuizResultsPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
 
-                // Icône et score
+                // Icon and score
                 Image.asset(
                   'assets/Congrats.png',
                   height: 80,
                   errorBuilder: (context, error, stackTrace) => const Icon(
                     Icons.emoji_events,
                     size: 80,
-                    // color: Colors.teal,
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -114,11 +184,11 @@ class QuizResultsPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
 
-                // Barre de progression
+                // Progress bar
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: LinearProgressIndicator(
-                    value: score / totalQuestions,
+                    value: progressValue, // Safe division value
                     backgroundColor: Colors.grey[300],
                     color: Colors.teal,
                     minHeight: 12,
@@ -126,13 +196,16 @@ class QuizResultsPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 30),
 
-                // Bouton Next
+                // Next button
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      // Ajoutez votre logique de redirection ici
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => LeaderboardPage()),);
+                      // Redirect to leaderboard page
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => LeaderboardPage()),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blueGrey,
@@ -141,7 +214,7 @@ class QuizResultsPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(30),
                       ),
                     ),
-                    child: const Text( 
+                    child: const Text(
                       "Next",
                       style: TextStyle(
                         fontSize: 18,

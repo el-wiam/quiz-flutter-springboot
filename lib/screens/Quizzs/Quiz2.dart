@@ -1,8 +1,57 @@
 import 'package:flutter/material.dart';
-import 'Quiz3.dart'; // Assurez-vous que le chemin est correct et que Quiz3 existe.
+import 'Quiz3.dart'; 
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class SubjectPage extends StatelessWidget {
+class SubjectPage extends StatefulWidget {
+  final int quizId;
+  final int userId;
+
+  SubjectPage({required this.quizId, required this.userId});
+
+  @override
+  _SubjectPageState createState() => _SubjectPageState();
+}
+
+class _SubjectPageState extends State<SubjectPage> {
   final TextEditingController _nameController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Fetch the user's name when the page is loaded
+    _fetchUserName(widget.userId);
+  }
+
+  Future<void> _fetchUserName(int userId) async {
+    final url = Uri.parse('http://localhost:8080/user/uid/$userId');
+    try {
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        final user = json.decode(response.body);
+        final username = user['username'];
+
+        // Update the text field with the username
+        _nameController.text = username;
+      } else {
+        // Handle error
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Failed to fetch user data'),
+            backgroundColor: Colors.redAccent,
+          ),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Error fetching user data'),
+          backgroundColor: Colors.redAccent,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +129,10 @@ class SubjectPage extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => DevOpsQuizPage(),
+                              builder: (context) => DevOpsQuizPage(
+                                quizId: widget.quizId,
+                                userId: widget.userId,
+                              ),
                             ),
                           );
                         } else {

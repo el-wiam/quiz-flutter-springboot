@@ -36,16 +36,6 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category getCategory(int catid) {
-
-//		Optional<Category> category = this.catRepo.findById(catid);
-//		if(category.isPresent())
-//		{
-//			return category.get();
-//		}
-//		return null;
-
-        //	return this.catRepo.getById(catid);
-
         return this.catRepo.findById(catid).get();
     }
 

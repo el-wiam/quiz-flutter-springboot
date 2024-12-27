@@ -1,6 +1,64 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class LoginScreen extends StatelessWidget {
+import 'home.dart'; // Import TopicsPage
+
+
+class LoginScreen extends StatefulWidget {
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false;
+  String? _errorMessage;
+
+  Future<void> _login() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
+    final url = Uri.parse('http://localhost:8080/user/login');
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          'username': _usernameController.text.trim(),
+          'password': _passwordController.text.trim(),
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final user = json.decode(response.body);
+        final userId = user['uid']; // Extract user ID from the response
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TopicsPage(userId: userId), // Pass user ID to TopicsPage
+          ),
+        );
+      } else {
+        setState(() {
+          _errorMessage = 'Invalid username or password.';
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'An error occurred. Please try again.';
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,13 +78,12 @@ class LoginScreen extends StatelessWidget {
                     shape: BoxShape.circle,
                     color: Colors.lightBlue[50],
                   ),
-                    child: Image.asset(
-                      'assets/quiz1.png', // Chemin de l'image
-                      fit: BoxFit.cover,
-                    ),
+                  child: Image.asset(
+                    'assets/quiz1.png', // Path to the image
+                    fit: BoxFit.cover,
+                  ),
                 ),
                 const SizedBox(height: 20),
-                // Login Text
                 const Text(
                   "LOGIN",
                   style: TextStyle(
@@ -36,37 +93,37 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 30),
-                // Username Field
                 TextField(
+                  controller: _usernameController,
                   decoration: InputDecoration(
                     labelText: "Username",
                     prefixIcon: const Icon(Icons.person),
-                    suffixIcon: const Icon(Icons.clear),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
                 ),
                 const SizedBox(height: 20),
-                // Password Field
                 TextField(
+                  controller: _passwordController,
                   obscureText: true,
                   decoration: InputDecoration(
                     labelText: "Password",
                     prefixIcon: const Icon(Icons.lock),
-                    suffixIcon: const Icon(Icons.clear),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
                 ),
                 const SizedBox(height: 20),
-                // Login Button
+                if (_errorMessage != null)
+                  Text(
+                    _errorMessage!,
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                const SizedBox(height: 10),
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(
-                        context, '/home');
-                  },
+                  onPressed: _isLoading ? null : _login,
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
@@ -75,17 +132,20 @@ class LoginScreen extends StatelessWidget {
                         horizontal: 40, vertical: 15),
                     backgroundColor: Colors.blueGrey,
                   ),
-                  child: const Text("Login"),
+                  child: _isLoading
+                      ? const CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.white),
+                        )
+                      : const Text("Login"),
                 ),
                 const SizedBox(height: 20),
-                // Create an account
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(
-                        context, '/signup'); // Navigate to SignUpScreen
+                    Navigator.pushNamed(context, '/signup');
                   },
                   child: const Text(
-                    "create an account",
+                    "Create an account",
                     style: TextStyle(
                       color: Colors.blueGrey,
                       decoration: TextDecoration.underline,

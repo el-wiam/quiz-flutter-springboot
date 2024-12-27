@@ -22,4 +22,6 @@ public interface UserService {
 
     // get all users
     public List<User> getAllUsers();
+    // Authenticate user
+    public User login(String username, String password) throws Exception;
 }

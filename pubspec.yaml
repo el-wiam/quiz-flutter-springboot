@@ -13,8 +13,11 @@ dependencies:
   flutter:
     sdk: flutter
   image_picker: ^1.0.4
-
+  html: ^0.15.0
+  fluttertoast: ^8.0.9
   cupertino_icons: ^1.0.8
+  http: ^1.0.0 # For HTTP requests
+  flutter_dotenv: ^5.0.2 # For environment variables (optional but recommended)
 
 dev_dependencies:
   flutter_test:

@@ -111,4 +111,16 @@ public class UserServiceImpl implements UserService {
 
         return this.userRepo.findAll();
     }
+    //========== user login ============================================================================================================================
+    @Override
+    public User login(String username, String password) throws Exception {
+        User user = this.userRepo.findByUsername(username);
+        if (user == null) {
+            throw new Exception("User not found with username: " + username);
+        }
+        if (!user.getPassword().equals(password)) {
+            throw new Exception("Invalid password for username: " + username);
+        }
+        return user;
+    }
 }

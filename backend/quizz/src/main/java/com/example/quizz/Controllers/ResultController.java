@@ -20,36 +20,54 @@ public class ResultController {
     @Autowired
     private QuizService quizServ;
 
+    // Add a new result
     @PostMapping("/create")
-    public ResponseEntity<?> addResult(@RequestBody Result result) throws Exception {
-        System.out.println("============================================================================================================================================");
-        System.out.println("uid: " + result.getUid());
-        System.out.println("quizid: " + result.getQuizid());
-        System.out.println("numofquestions: " + result.getNumofquestions());
-        System.out.println("quesid: " + result.getUserqnas().get(0).getQuesid());
-        System.out.println("answer: " + result.getUserqnas().get(0).getAnswer());
-        System.out.println("============================================================================================================================================");
-
+    public ResponseEntity<Result> addResult(@RequestBody Result result) {
         return ResponseEntity.ok(this.resultServ.addResult(result));
     }
 
+    // Get all results
+    @GetMapping("/all")
+    public ResponseEntity<List<Result>> getAllResults() {
+        return ResponseEntity.ok(this.resultServ.getResults());
+    }
+
+    // Get a single result by its ID
+    @GetMapping("/{resultid}")
+    public ResponseEntity<Result> getResultById(@PathVariable("resultid") int resultid) {
+        return ResponseEntity.ok(this.resultServ.getResult(resultid));
+    }
+
+    // Get the current result
     @GetMapping("/current")
-    public ResponseEntity<?> getCurrentResult() throws Exception {
+    public ResponseEntity<Result> getCurrentResult() {
         return ResponseEntity.ok(this.resultServ.getCurrentResult());
     }
 
+    // Delete a result by its ID
+    @DeleteMapping("/delete/{resultid}")
+    public ResponseEntity<Void> deleteResult(@PathVariable("resultid") int resultid) {
+        this.resultServ.deleteResult(resultid);
+        return ResponseEntity.noContent().build();
+    }
+
+    // Delete all results
+    @DeleteMapping("/deleteall")
+    public ResponseEntity<Void> deleteAllResults() {
+        this.resultServ.deleteAllResult();
+        return ResponseEntity.noContent().build();
+    }
+
+    // Get all results of a specific user
     @GetMapping("/all/{uid}")
-    public ResponseEntity<List<Result>> getAllResultsofUser(@PathVariable("uid") int uid) throws Exception {
+    public ResponseEntity<List<Result>> getAllResultsOfUser(@PathVariable("uid") int uid) {
         return ResponseEntity.ok(this.resultServ.getResultsofUser(uid));
     }
 
+    // Delete all results of a specific user
     @DeleteMapping("/deleteall/{uid}")
-    public void deleteAllResultsofUser(@PathVariable("uid") int uid) {
+    public ResponseEntity<Void> deleteAllResultsOfUser(@PathVariable("uid") int uid) {
         this.resultServ.deleteAllResultOfUser(uid);
-    }
-
-    @DeleteMapping("/delete/{resultid}")
-    public void deleteResult(@PathVariable("resultid") int resultid) {
-        this.resultServ.deleteResult(resultid);
+        return ResponseEntity.noContent().build();
     }
 }

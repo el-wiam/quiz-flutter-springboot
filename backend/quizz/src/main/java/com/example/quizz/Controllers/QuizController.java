@@ -209,4 +209,27 @@ public class QuizController {
         }
         return ResponseEntity.ok(this.quizServ.getQuizzes());
     }
+    // Get quizzes by category
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<Set<Quiz>> getQuizzesOfCategory(@PathVariable int categoryId) {
+        Set<Quiz> quizzes = this.quizServ.getQuizzesOfCategory(categoryId);
+        return ResponseEntity.ok(quizzes);
+    }
+
+    // Get active quizzes
+    @GetMapping("/active")
+    public ResponseEntity<Set<Quiz>> getActiveQuizzes(@RequestParam Boolean active) {
+        Set<Quiz> activeQuizzes = this.quizServ.getActiveQuizzes(active);
+        return ResponseEntity.ok(activeQuizzes);
+    }
+
+    // Get active quizzes by category
+    @GetMapping("/category/{categoryId}/active")
+    public ResponseEntity<Set<Quiz>> getActiveQuizzesOfCategory(
+            @PathVariable int categoryId,
+            @RequestParam Boolean active) {
+        Set<Quiz> activeQuizzes = this.quizServ.getActiveQuizzesOfCategory(categoryId, active);
+        return ResponseEntity.ok(activeQuizzes);
+    }
+
 }

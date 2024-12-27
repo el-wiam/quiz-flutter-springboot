@@ -50,4 +50,10 @@ public class UserController {
     public User updateUser(@RequestBody User user) throws Exception {
         return this.userServ.updateUser(user);
     }
+    //========== user login ============================================================================================================================
+    @PostMapping("/login")
+    public User login(@RequestBody User user) throws Exception {
+        return this.userServ.login(user.getUsername(), user.getPassword());
+    }
+
 }
