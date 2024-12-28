@@ -23,7 +23,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
 
-  dynamic _profileImage; // Can handle both File (mobile) and network paths (web)
+  dynamic
+      _profileImage; // Can handle both File (mobile) and network paths (web)
   final ImagePicker _picker = ImagePicker();
 
   Future<void> _pickImage() async {
@@ -47,7 +48,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       return;
     }
 
-    final url = Uri.parse('http://localhost:8080/user/create'); 
+    final url = Uri.parse('http://localhost:8080/user/create');
 
     try {
       var request = http.MultipartRequest('POST', url);
@@ -58,6 +59,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       request.fields['email'] = _emailController.text;
       request.fields['phone'] = _phoneController.text;
 
+      // Only add profile image if it's not null
       if (_profileImage != null && !kIsWeb) {
         request.files.add(await http.MultipartFile.fromPath(
           'profile',
@@ -166,7 +168,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               )
                       else
                         Image.asset(
-                          'assets/placeholder.png',
+                          'assets/Profil.png',
                           width: 50,
                           height: 50,
                           fit: BoxFit.cover,
