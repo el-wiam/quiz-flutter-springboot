@@ -54,13 +54,21 @@ class NotificationPage extends StatelessWidget {
           // Liste des notifications
           Expanded(
             child: ListView.builder(
-              itemCount: 5, // Nombre d'éléments dans la liste
+              itemCount: 2, // Nombre d'éléments dans la liste (2 notifications)
               itemBuilder: (context, index) {
-                return NotificationTile(
-                  title: "Title ${index + 1}",
-                  description: "Description for notification ${index + 1}",
-                  time: "9:4${index} AM",
-                );
+                if (index == 0) {
+                  return NotificationTile(
+                    title: "Mathematics",
+                    description: "New quiz in Mathematics",
+                    time: "9:40 PM",
+                  );
+                } else {
+                  return NotificationTile(
+                    title: "Music",
+                    description: "New quiz in Music",
+                    time: "10:00 AM",
+                  );
+                }
               },
             ),
           ),

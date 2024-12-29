@@ -40,7 +40,7 @@ class MenuPage extends StatelessWidget {
 
             // Username Text
             const Text(
-              "Username",
+              "wiamel",
               style: TextStyle(
                 fontSize: 26,
                 fontWeight: FontWeight.bold,
