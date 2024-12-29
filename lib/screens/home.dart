@@ -119,7 +119,7 @@ class _TopicsPageState extends State<TopicsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(116, 156, 164, 1),
+        backgroundColor: const Color.fromARGB(255, 102, 222, 246),
         leading: GestureDetector(
           onTap: () {
             Navigator.push(
@@ -228,7 +228,7 @@ class _TopicsPageState extends State<TopicsPage> {
               onPressed: () => _showCategoryDialog(context),
               child: Text('Add Category'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(241, 1, 142, 193),
+                backgroundColor: const Color.fromRGBO(96, 125, 139, 1),
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               ),
             ),

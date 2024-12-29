@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'Quiz5.dart'; // Import the page for the leaderboard or next page
+import 'Quiz5.dart'; 
 
 class QuizResultsPage extends StatefulWidget {
   final int userId;
@@ -204,7 +204,7 @@ class _QuizResultsPageState extends State<QuizResultsPage> {
                       // Redirect to leaderboard page
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => LeaderboardPage()),
+                        MaterialPageRoute(builder: (context) => LeaderboardPage(userId : widget.userId , resultId:widget.resultId, quizId: widget.quizId)),
                       );
                     },
                     style: ElevatedButton.styleFrom(

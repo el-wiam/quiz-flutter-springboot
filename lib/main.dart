@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
         '/Quiz2': (context) => SubjectPage(quizId: 0, userId: 0,),
         '/Quiz3': (context) => DevOpsQuizPage(quizId: 0, userId: 0,),
         '/Quiz4': (context) => QuizResultsPage(userId: 0, resultId: 0, quizId: 0,),
-        '/Quiz5': (context) => LeaderboardPage(),
+        '/Quiz5': (context) => LeaderboardPage(userId: 0, quizId: 0, resultId: 0,),
         '/CR_Q1': (context) => CRQ1.CreateQuizPage(), // Specify the alias
         '/CR_Q2': (context) => CRQ2.SetQuestionsPage(quizId: 3, questionCount: 0, quizTitle: '',),
         '/CR_Q3': (context) => QuizTopicPage(quizTitle: '', quizId: 0,),
